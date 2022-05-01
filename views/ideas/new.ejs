@@ -1,0 +1,52 @@
+<% layout('/layouts/boilerplate')%>
+<title>new</title>
+
+<h1 class="text-center mt-3">new</h1>
+<div class = "col-md-6 offset-md-3"> 
+    <form action="/ideas" method = "POST" class = "needs-validation" novalidate>
+
+      <div>
+          <label class = "form-label" for="title">title: </label>
+          <input class = "form-control" type="text" name="idea[title]" id="title" required>
+         
+      </div>
+
+      <div class = "mt-3">
+          <label class = "form-label" for="description">description: </label>
+          <textarea class = "form-control" name="idea[description]" id="description" rows = "2" cols = "15"" required></textarea>
+      </div>
+
+      <!-- <p class = "mt-3">how will you make your idea?</p>
+
+      <div class="form-check">
+          <label class = "form-check-label" for = "writing">writing</label>
+          <input class = "form-check-input" type="checkbox" id = "writing" name = "idea[medium]" value = "writing">
+      </div>
+
+      <div class="form-check">
+          <label class = "form-check-label" for = "coding">coding</label>
+          <input class = "form-check-input" type="checkbox" id = "coding" name = "idea[medium]" value = "coding">
+      </div>
+
+      <div class="form-check">
+          <label class = "form-check-label" for = "drawing">drawing</label>
+          <input class = "form-check-input" type="checkbox" id = "drawing" name = "idea[medium]" value = "drawing">
+      </div>
+
+      <div class="form-check mb-3">
+          <label class = "form-check-label" for = "filming">filming</label>
+          <input class = "form-check-input" type="checkbox" id = "filming" name = "idea[medium]" value = "filming">
+      </div> -->
+  
+        <label class = "form-label" for="contact">contact: </label>
+        <input class = "form-control" type = "text" name="idea[contact]" id="contact" required></label>
+        
+      <div class="col-12 mt-3">
+          <button class="btn btn-success">submit</button>
+      </div>
+
+    
+    </form>
+
+</div>
+   

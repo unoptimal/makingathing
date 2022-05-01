@@ -1,0 +1,11 @@
+<% layout('layouts/boilerplate')%>
+    <title>Idea Masterlist</title>
+    
+<div class = "col-md-2 offset-md-2 mt-3">    
+    <ul>
+    <%for(let idea of ideas){%>
+        <li><a href= "ideas/<%=idea._id%>"><%=idea.title%></a></li>   
+    <%}%>
+    </ul>
+
+</div>

@@ -1,0 +1,33 @@
+<% layout('layouts/boilerplate')%>
+<title><%=idea.title%></title>
+
+<div class = "col-md-6 offset-md-2 mt-3 container-fluid">
+            
+    <div >
+        <h1 class = "mb-3"><%=idea.title%></h1>
+        <!-- <div class="card" style= "width: 20rem; padding: 5px 10px 10px 10px">
+                <%=idea.medium%>
+          </div> -->
+        <small class="text-muted container-fluid mb-3"> by <%=idea.author.username%></small>
+    </div>
+
+    <div class = "container-fluid">
+        <p style="font-size: 1.5em"><%=idea.description%></p>
+    </div>
+  
+    <div class = "container-fluid">
+        <p style="font-size: 1 em">contact: <%=idea.contact%></p>
+    </div>
+   
+
+    <!-- if someone is logged in, and that logged in person's ID equals the id of the author of the campground, then show edit and delete -->
+    <% if(currentUser && idea.author.equals(currentUser._id)) {%> 
+    <div class = "mb-2">
+        <button class="btn btn-light"><a href="/ideas/<%=idea._id%>/edit">edit</a></button>
+    </div>
+    <form action="/ideas/<%=idea._id%>?_method=DELETE" method = "POST">
+        <button class="btn btn-danger">delete</button>
+    </form>
+    <% } %> 
+    
+</div>
