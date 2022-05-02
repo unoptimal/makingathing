@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 const Idea = require('./models/idea');
 
 // mongodb+srv://unoptimal:<password>@makingathing.cqllm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/makingathing';
+const dbUrl = process.env.DB_URL;
 //'mongodb://localhost:27017/makingathing'
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
