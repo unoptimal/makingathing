@@ -96,6 +96,7 @@ const sessionConfig = {
 }
 
 app.use(session(sessionConfig));
+app.use(flash()); //req.locals makes stuff globally usable in templates
 
 //passport config, 
 const passport = require('passport')
@@ -106,11 +107,10 @@ const User = require('./models/user');
 app.use(passport.initialize());
 app.use(passport.session()); //must come before app.use(session());
 passport.use(new LocalStrategy(User.authenticate())); //use the localstrategy to authenticate our userschema
-
 passport.serializeUser(User.serializeUser()); //storing a user in the session
 passport.deserializeUser(User.deserializeUser()); //getting a user out of the session
 
-app.use(flash()); //req.locals makes stuff globally usable in templates
+
 app.use((req, res, next) =>{
     res.locals.currentUser = req.user; //(req) stores information of a user. passport deserializes it. now we can use it anywhere
     res.locals.success = req.flash('success')
