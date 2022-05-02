@@ -15,12 +15,12 @@ router.post('/register', catchAsync(async(req, res, next)=>{
     const newUser = await User.register(user, password);
     req.login(newUser, err => {
         if(err) return next(err);
-        req.flash('success', 'welcome! go make something')
+        // req.flash('success', 'welcome! go make something')
         res.redirect('/ideas')
     })
 
     } catch(e){
-        req.flash('error', e.message)
+        // req.flash('error', e.message)
         res.redirect('register')
     }
 }))
@@ -31,12 +31,12 @@ router.get('/login', (req, res) =>{
 
 router.get('/logout', (req, res) =>{
     req.logout();
-    req.flash('success', 'logged out. come back soon')
+    // req.flash('success', 'logged out. come back soon')
     res.redirect('/')
 })
 
 router.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), (req, res) =>{
-    req.flash('success', 'welcome back! go make something')
+    // req.flash('success', 'welcome back! go make something')
     const redirectUrl = req.session.returnTo || '/ideas';
     delete req.session.returnTo;
     res.redirect(redirectUrl)
