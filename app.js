@@ -75,14 +75,8 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo').default;
 const secret = process.env.SECRET || 'secret'
 
-let store = new MongoStore({
-    mongoUrl: dbUrl,
-    secret: secret,
-    touchAfter: 24 * 60 * 60
-})
-
 const sessionConfig = {
-    store: store, 
+    store: MongoStore.create({dbUrl}), 
     name: 'blah',
     secret: secret,
     resave: false,
