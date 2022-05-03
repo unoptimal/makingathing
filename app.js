@@ -24,7 +24,6 @@ mongoose.connect(dbUrl, {
   console.log(Error, err.message);
 })
 
-
 //ejs
 const ejsMate = require('ejs-mate');
 app.engine('ejs', ejsMate);
@@ -63,10 +62,6 @@ const validateIdea = (req, res, next) => {
 const mongoSanitize = require('express-mongo-sanitize');
 app.use(mongoSanitize());
 
-//helmet
-const helmet = require('helmet')
-app.use(helmet({contentSecurityPolicy: false}));
-
 //use these middlewares or functions
 app.use(express.static('public')) //allow for public directories, can put custom scripts, styles, etc
 
@@ -75,38 +70,45 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const secret = process.env.SECRET || 'secret'
 
-
-  app.use(session({
+app.use(session({
     secret: 'foo',
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: dbUrl,
+      mongoUrl: dbUrl,
     })
   }));
 
-// let store = new MongoStore({
-//     mongoUrl: dbUrl,
-//     secret: secret,
+// const store = new MongoStore({
+//     url: dbUrl,
+//     secret,
 //     touchAfter: 24 * 60 * 60
+// });
+
+// store.on("error", function (e) {
+//     console.log("SESSION STORE ERROR", e)
 // })
 
 // const sessionConfig = {
-//     store: store, 
-//     name: 'blah',
-//     secret: secret,
+//     store,
+//     name: 'session',
+//     secret,
 //     resave: false,
 //     saveUninitialized: true,
-//     cookie:{
+//     cookie: {
 //         httpOnly: true,
 //         // secure: true,
-//         expires: Date.now() + (1000 * 60 * 60 * 24 * 7),
-//         maxAge: (1000 * 60 * 60 * 24 * 7)
+//         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+//         maxAge: 1000 * 60 * 60 * 24 * 7
 //     }
 // }
 
 // app.use(session(sessionConfig));
 app.use(flash()); //req.locals makes stuff globally usable in templates
+
+//helmet
+const helmet = require('helmet')
+app.use(helmet({contentSecurityPolicy: false}));
 
 //passport config, 
 const passport = require('passport')
@@ -117,6 +119,7 @@ const User = require('./models/user');
 app.use(passport.initialize());
 app.use(passport.session()); //must come before app.use(session());
 passport.use(new LocalStrategy(User.authenticate())); //use the localstrategy to authenticate our userschema
+
 passport.serializeUser(User.serializeUser()); //storing a user in the session
 passport.deserializeUser(User.deserializeUser()); //getting a user out of the session
 
