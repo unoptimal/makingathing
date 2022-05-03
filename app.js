@@ -72,11 +72,11 @@ app.use(express.static('public')) //allow for public directories, can put custom
 
 //session + mongo connect + config
 const session = require('express-session');
-const MongoStore = require('connect-mongo').default;
+const MongoStore = require('connect-mongo');
 const secret = process.env.SECRET || 'secret'
 
 const sessionConfig = {
-    store: MongoStore.create({dbUrl}), 
+    store: MongoStore.create({mongoUrl: dbUrl}), 
     name: 'blah',
     secret: secret,
     resave: false,
