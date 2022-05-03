@@ -76,21 +76,14 @@ const MongoStore = require('connect-mongo');
 const secret = process.env.SECRET || 'secret'
 
 
-app.use(session({
-    store: MongoStore.create({ mongoUrl: dbUrl }),
-    name: 'blah',
-    secret: secret,
+  app.use(session({
+    secret: 'foo',
     resave: false,
-    saveUninitialized: true,
-    cookie:{
-        httpOnly: true,
-        // secure: true,
-        expires: Date.now() + (1000 * 60 * 60 * 24 * 7),
-        maxAge: (1000 * 60 * 60 * 24 * 7)
-    }
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: dbUrl,
+    })
   }));
-  
-
 
 // let store = new MongoStore({
 //     mongoUrl: dbUrl,
