@@ -75,27 +75,42 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const secret = process.env.SECRET || 'secret'
 
+
 let store = new MongoStore({
-    mongoUrl: dbUrl,
-    secret: secret,
-    touchAfter: 24 * 60 * 60
-})
-
-const sessionConfig = {
-    store: store, 
-    name: 'blah',
-    secret: secret,
+    mongoUrl: url,
+ });
+ 
+  // session config
+ 
+  app.use(session({
+    secret: 'haha',
     resave: false,
-    saveUninitialized: true,
-    cookie:{
-        httpOnly: true,
-        // secure: true,
-        expires: Date.now() + (1000 * 60 * 60 * 24 * 7),
-        maxAge: (1000 * 60 * 60 * 24 * 7)
-    }
-}
+    store: store,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 }, // 24 hours
+  }));
 
-app.use(session(sessionConfig));
+// let store = new MongoStore({
+//     mongoUrl: dbUrl,
+//     secret: secret,
+//     touchAfter: 24 * 60 * 60
+// })
+
+// const sessionConfig = {
+//     store: store, 
+//     name: 'blah',
+//     secret: secret,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie:{
+//         httpOnly: true,
+//         // secure: true,
+//         expires: Date.now() + (1000 * 60 * 60 * 24 * 7),
+//         maxAge: (1000 * 60 * 60 * 24 * 7)
+//     }
+// }
+
+// app.use(session(sessionConfig));
 app.use(flash()); //req.locals makes stuff globally usable in templates
 
 //passport config, 
