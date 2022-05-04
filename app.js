@@ -76,8 +76,12 @@ const store = new MongoStore({
     touchAfter: 24 * 60 * 60
 });
 
+store.on("error", function (e) {
+    console.log("SESSION STORE ERROR", e)
+})
+
 const sessionConfig = {
-    store: store,
+    store,
     name: 'session',
     secret,
     resave: false,
@@ -89,6 +93,7 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
+
 
 app.use(session(sessionConfig));
 
