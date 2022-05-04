@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 const Idea = require('./models/idea');
 
 // mongodb+srv://unoptimal:<password>@makingathing.cqllm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-const dbUrl = process.env.DB_URL;
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/makingathing';
 //'mongodb://localhost:27017/makingathing'
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
@@ -70,10 +70,9 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const secret = process.env.SECRET || 'secret'
 
-let store = new MongoStore({
-    mongoUrl: dbUrl,
-    collection: "sessions"
- });
+let store = MongoStore.create({
+    mongoUrl: dbUrl
+})
 
 app.use(session({
     secret: 'foo',
