@@ -70,14 +70,16 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const secret = process.env.SECRET || 'secret'
 
+let store = new MongoStore({
+    mongoUrl: url,
+    collection: "sessions"
+ });
 
 app.use(session({
     secret: 'foo',
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: dbUrl,
-    })
+    store: store
   }));
 
 //colt
