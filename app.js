@@ -15,7 +15,7 @@ const Idea = require('./models/idea');
 // mongodb+srv://unoptimal:<password>@makingathing.cqllm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 const dbUrl = process.env.DB_URL;
 //'mongodb://localhost:27017/makingathing'
-const clientP = mongoose.connect(dbUrl, {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(res=>{
@@ -67,27 +67,34 @@ app.use(express.static('public')) //allow for public directories, can put custom
 
 //session + mongo connect + config
 const session = require('express-session');
-const MongoStore = require('connect-mongo');
+const MongoStore = require('connect-mongo')(session);
 const secret = process.env.SECRET || 'secret'
 
-app.use(session({
+const store = new MongoStore({
+    url: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60
+});
+
+store.on("error", function (e) {
+    console.log("SESSION STORE ERROR", e)
+})
+
+const sessionConfig = {
+    store: store,
     name: 'session',
-    secret: 'foo',
+    secret,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
         httpOnly: true,
         // secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
-    },
-    store: MongoStore.create({
-        mongoUrl: dbUrl, 
-        secret, 
-        touchAfter: 24 * 60 * 60
-    })
-  }));
+    }
+}
 
+app.use(session(sessionConfig));
 
 app.use(flash()); //req.locals makes stuff globally usable in templates
 
