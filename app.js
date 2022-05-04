@@ -15,7 +15,7 @@ const Idea = require('./models/idea');
 // mongodb+srv://unoptimal:<password>@makingathing.cqllm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 const dbUrl = process.env.DB_URL;
 //'mongodb://localhost:27017/makingathing'
-mongoose.connect(dbUrl, {
+const clientP = mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(res=>{
@@ -71,39 +71,24 @@ const MongoStore = require('connect-mongo');
 const secret = process.env.SECRET || 'secret'
 
 app.use(session({
+    name: 'session',
     secret: 'foo',
     resave: false,
     saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        // secure: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    },
     store: MongoStore.create({
-      mongoUrl: dbUrl,
+        mongoUrl: dbUrl, 
+        secret, 
+        touchAfter: 24 * 60 * 60
     })
   }));
 
-// const store = new MongoStore({
-//     url: dbUrl,
-//     secret,
-//     touchAfter: 24 * 60 * 60
-// });
 
-// store.on("error", function (e) {
-//     console.log("SESSION STORE ERROR", e)
-// })
-
-// const sessionConfig = {
-//     store,
-//     name: 'session',
-//     secret,
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: {
-//         httpOnly: true,
-//         // secure: true,
-//         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-//         maxAge: 1000 * 60 * 60 * 24 * 7
-//     }
-// }
-
-// app.use(session(sessionConfig));
 app.use(flash()); //req.locals makes stuff globally usable in templates
 
 //helmet
