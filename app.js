@@ -67,35 +67,45 @@ app.use(express.static('public')) //allow for public directories, can put custom
 
 //session + mongo connect + config
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo');
 const secret = process.env.SECRET || 'secret'
 
-const store = new MongoStore({
-    url: dbUrl,
-    secret,
-    touchAfter: 24 * 60 * 60
-});
 
-store.on("error", function (e) {
-    console.log("SESSION STORE ERROR", e)
-})
-
-const sessionConfig = {
-    store,
-    name: 'session',
-    secret,
+app.use(session({
+    secret: 'foo',
     resave: false,
-    saveUninitialized: true,
-    cookie: {
-        httpOnly: true,
-        // secure: true,
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        maxAge: 1000 * 60 * 60 * 24 * 7
-    }
-}
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: dbUrl,
+    })
+  }));
 
+//colt
+// const store = new MongoStore({
+//     url: dbUrl,
+//     secret,
+//     touchAfter: 24 * 60 * 60
+// });
 
-app.use(session(sessionConfig));
+// store.on("error", function (e) {
+//     console.log("SESSION STORE ERROR", e)
+// })
+
+// const sessionConfig = {
+//     store,
+//     name: 'session',
+//     secret,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//         httpOnly: true,
+//         // secure: true,
+//         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+//         maxAge: 1000 * 60 * 60 * 24 * 7
+//     }
+// }
+
+// app.use(session(sessionConfig));
 
 app.use(flash()); //req.locals makes stuff globally usable in templates
 
