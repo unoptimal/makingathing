@@ -71,7 +71,7 @@ const MongoStore = require('connect-mongo');
 const secret = process.env.SECRET || 'secret'
 
 let store = new MongoStore({
-    mongoUrl: url,
+    mongoUrl: dbUrl,
     collection: "sessions"
  });
 
