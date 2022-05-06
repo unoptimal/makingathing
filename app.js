@@ -13,9 +13,9 @@ const mongoose = require('mongoose');
 const Idea = require('./models/idea');
 
 // mongodb+srv://unoptimal:<password>@makingathing.cqllm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/makingathing';
+const dbName = process.env.DB_URL || 'mongodb://localhost:27017/makingathing';
 //'mongodb://localhost:27017/makingathing'
-mongoose.connect(dbUrl, {
+mongoose.connect(dbName, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(res=>{
@@ -67,7 +67,7 @@ app.use(express.static('public')) //allow for public directories, can put custom
 
 //session + mongo connect + config
 const session = require('express-session');
-// const MongoStore = require('connect-mongo'); SHIT DOESN'T WORK SMFH
+const MongoStore = require('connect-mongo'); 
 const secret = process.env.SECRET || 'secret'
 
 //colt
@@ -83,6 +83,7 @@ const secret = process.env.SECRET || 'secret'
 
 const sessionConfig = {
     name: 'session',
+    store: MongoStore.create({ mongoUrl: dbName }),
     secret,
     resave: false,
     saveUninitialized: true,
