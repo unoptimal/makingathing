@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ACC6CE;">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">making a thing</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" 
@@ -13,16 +13,19 @@
         </div>
         <div class="navbar-nav">
           
-          <a class="nav-link active" href="/register">register</a>
-          <a class="nav-link active" href="/login">login</a>
+          <%if(!currentUser){%>
+            <a class="nav-link active" href="/register">register</a>
+            <a class="nav-link active" href="/login">login</a>
+
+          <%} else{%>
           
-          <a class="nav-link active" href="/logout">logout</a>
+            <p class="nav-link active"><%=currentUser.username%></p>
+            <a class="nav-link active" href="/logout">logout</a>
+          <%}%>
+
         </div>
       
       </div>
     </div>
   </nav>
 
-
-  <!-- if currentUser, show register/login -->
-  <!-- include currentUser.username if logged in -->

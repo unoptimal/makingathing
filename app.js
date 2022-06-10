@@ -96,7 +96,6 @@ const sessionConfig = {
 }
 
 app.use(session(sessionConfig));
-
 app.use(flash()); //req.locals makes stuff globally usable in templates
 
 //helmet
